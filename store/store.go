@@ -9,8 +9,9 @@ import (
 
 // Store ...
 type Store struct {
-	config *Config
-	db     *sql.DB
+	config         *Config
+	db             *sql.DB
+	userRepository *UserRepository
 }
 
 // New ...
@@ -38,6 +39,17 @@ func (s *Store) DatabaseInfo() (dbname, user string) {
 	dbname = s.config.DBName
 	user = s.config.UserName
 	return
+}
+
+// User returned public repo interface
+func (s *Store) User() *UserRepository {
+	if s.userRepository != nil {
+		return s.userRepository
+	}
+	s.userRepository = &UserRepository{
+		store: s,
+	}
+	return s.userRepository
 }
 
 // Open ...
