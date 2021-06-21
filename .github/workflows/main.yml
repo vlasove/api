@@ -1,4 +1,4 @@
-name: Lint Go Code
+name: Lint and Test Go Code
 
 on:
   push:
@@ -34,3 +34,20 @@ jobs:
           go get -u golang.org/x/lint/golint 
 
           golint ./...
+  test:
+    strategy:
+      matrix:
+        go-version: [1.12.x, 1.13.x, 1.14.x, 1.15.x, 1.16.x]
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - uses: actions/checkout@v2
+
+      - name: Test
+        run: go test -v ./...
