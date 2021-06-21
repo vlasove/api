@@ -1,6 +1,0 @@
-host = "localhost"
-port = "5432"
-username = "admin"
-user_password = "admin"
-db_name = "restapi_test"
-sslmode = "disable"
