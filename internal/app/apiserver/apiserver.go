@@ -9,6 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	"github.com/vlasove/api/store"
 )
 
 // APIServer ...
@@ -17,6 +18,7 @@ type APIServer struct {
 	logger *logrus.Logger
 	router *mux.Router
 	server *http.Server
+	store  *store.Store
 }
 
 // New ...
@@ -41,6 +43,12 @@ func (s *APIServer) Start() error {
 		Addr:    s.config.BindAddr,
 		Handler: s.router,
 	}
+
+	if err := s.configureStore(); err != nil {
+		return err
+	}
+	dbname, username := s.store.DatabaseInfo()
+	s.logger.Infof("Database connection successfully opened. DB:%s USER:%s", dbname, username)
 	return s.server.ListenAndServe()
 }
 
@@ -52,6 +60,21 @@ func (s *APIServer) Shutdown(ctx context.Context) error {
 // Logger ...
 func (s *APIServer) Logger() *logrus.Logger {
 	return s.logger
+}
+
+// configureStore ...
+func (s *APIServer) configureStore() error {
+	st := store.New(s.config.Store)
+	if err := st.Open(); err != nil {
+		return err
+	}
+	s.store = st
+	return nil
+}
+
+// Store ...
+func (s *APIServer) Store() *store.Store {
+	return s.store
 }
 
 // configureLogger ...

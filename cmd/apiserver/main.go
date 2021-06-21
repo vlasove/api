@@ -3,12 +3,10 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/BurntSushi/toml"
 	"github.com/vlasove/api/internal/app/apiserver"
@@ -47,7 +45,7 @@ func main() {
 	if err := s.Shutdown(context.Background()); err != nil {
 		s.Logger().Errorf("error occured on server shutting down: %s", err.Error())
 	}
-	fmt.Println("I can do more stuff...")
-	time.Sleep(time.Second * 2)
-	fmt.Println("Bye")
+	s.Logger().Info("Trying to close connection to database")
+	s.Store().Close()
+	s.Logger().Info("Database successfully closed")
 }
