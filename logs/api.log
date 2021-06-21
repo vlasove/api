@@ -15,3 +15,8 @@ time="2021-06-21T13:31:14+03:00" level=info msg="Starting API Server at port :80
 time="2021-06-21T13:31:14+03:00" level=info msg="Routes configurete successfully"
 time="2021-06-21T13:31:15+03:00" level=info msg="Shutting down API Server...."
 time="2021-06-21T13:31:15+03:00" level=error msg="error occured while running http server: http: Server closed"
+time="2021-06-21T15:21:46+03:00" level=info msg="Starting API Server at port :8080"
+time="2021-06-21T15:21:46+03:00" level=info msg="Routes configurete successfully"
+time="2021-06-21T15:21:51+03:00" level=info msg="Method:GET URL:/hello User-Agent:Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 YaBrowser/21.3.3.1195 (beta) Yowser/2.5 Safari/537.36"
+time="2021-06-21T15:22:06+03:00" level=info msg="Shutting down API Server...."
+time="2021-06-21T15:22:06+03:00" level=error msg="error occured while running http server: http: Server closed"
