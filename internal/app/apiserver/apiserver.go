@@ -13,11 +13,10 @@ import (
 
 // APIServer ...
 type APIServer struct {
-	config       *Config
-	logger       *logrus.Logger
-	router       *mux.Router
-	server       *http.Server
-	loggerWriter io.Writer
+	config *Config
+	logger *logrus.Logger
+	router *mux.Router
+	server *http.Server
 }
 
 // New ...
