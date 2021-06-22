@@ -7,13 +7,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gorilla/sessions"
 	"github.com/stretchr/testify/assert"
 	"github.com/vlasove/api/internal/app/model"
 	"github.com/vlasove/api/internal/app/store/teststore"
 )
 
 func TestServer_HandleUsersCreate(t *testing.T) {
-	s := newServer(teststore.New())
+	s := newServer(teststore.New(), sessions.NewCookieStore([]byte("secret")))
 	testCases := []struct {
 		name         string
 		payload      interface{}
@@ -67,7 +68,7 @@ func TestServer_HandleSessionsCreate(t *testing.T) {
 
 	u := model.TestUser(t)
 	store := teststore.New()
-	s := newServer(store)
+	s := newServer(store, sessions.NewCookieStore([]byte("secret")))
 	err := store.User().Create(u)
 	if err != nil {
 		t.Fatalf("can not create test user")

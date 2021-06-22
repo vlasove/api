@@ -1,6 +1,7 @@
 bind_addr = ":8080"
 log_level = "debug"
 log_file_path = "logs/api.log"
+session_key = "kaskjvbnasmdp1oiiu1798d90j12[k1aslkhdilaskdnfbhjnalkslkd"
 
 
 [databaseconnector]

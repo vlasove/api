@@ -5,6 +5,7 @@ type Config struct {
 	BindAddr          string `toml:"bind_addr"`
 	LogFilePath       string `toml:"log_file_path"`
 	LogLevel          string `toml:"log_level"`
+	SessionKey        string `toml:"session_key"`
 	DatabaseConnector *DBConnector
 	DatabaseURL       string
 }
@@ -17,5 +18,6 @@ func NewConfig() *Config {
 		LogLevel:          "debug",
 		LogFilePath:       "apiserver.log",
 		DatabaseConnector: NewDBConnector(),
+		SessionKey:        "sessionKey9000",
 	}
 }
