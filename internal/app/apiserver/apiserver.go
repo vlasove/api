@@ -14,6 +14,7 @@ func Start(config *Config) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 	store := sqlstore.New(db)
 	srv := newServer(store)
 
@@ -26,7 +27,6 @@ func newDB(databaseURL string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer db.Close()
 
 	if err := db.Ping(); err != nil {
 		return nil, err
