@@ -2,12 +2,17 @@ package apiserver
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"github.com/vlasove/api/internal/app/model"
 	"github.com/vlasove/api/internal/app/store"
+)
+
+var (
+	errIncorrectEmailOrPassword = errors.New("incorrect email or password credentials")
 )
 
 type server struct {
@@ -33,6 +38,7 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *server) configureRouter() {
 	s.router.HandleFunc("/users", s.handleUsersCreate()).Methods("POST")
+	s.router.HandleFunc("/sessions", s.handleSessionsCreate()).Methods("POST")
 }
 
 func (s *server) handleUsersCreate() http.HandlerFunc {
@@ -58,6 +64,30 @@ func (s *server) handleUsersCreate() http.HandlerFunc {
 		}
 		u.Sanitize()
 		s.respond(w, r, http.StatusCreated, u)
+
+	}
+}
+
+func (s *server) handleSessionsCreate() http.HandlerFunc {
+	type request struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		req := &request{}
+		err := json.NewDecoder(r.Body).Decode(req)
+		if err != nil {
+			s.error(w, r, http.StatusBadRequest, err)
+			return
+		}
+
+		u, err := s.store.User().FindByEmail(req.Email)
+		if err != nil || !u.ComparePassword(req.Password) {
+			s.error(w, r, http.StatusUnauthorized, errIncorrectEmailOrPassword)
+			return
+		}
+
+		s.respond(w, r, http.StatusAccepted, nil)
 
 	}
 }
